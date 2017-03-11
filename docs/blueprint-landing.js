@@ -57,6 +57,7 @@
 	 * of the license at https://github.com/palantir/blueprint/blob/master/LICENSE
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
+	// tslint:disable no-var-requires
 	__webpack_require__(2);
 	__webpack_require__(16);
 
@@ -34972,6 +34973,7 @@
 	 * and https://github.com/palantir/blueprint/blob/master/PATENTS
 	 */
 	"use strict";
+	// tslint:disable no-var-requires
 	var HERO_SVGS = {
 	    "alert": __webpack_require__(285),
 	    "buttons": __webpack_require__(286),

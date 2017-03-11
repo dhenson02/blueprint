@@ -25,6 +25,7 @@ export interface ITooltipProps extends IProps, IIntentProps {
     /**
      * Constraints for the underlying Tether instance.
      * See http://github.hubspot.com/tether/#constraints
+     * @deprecated since v1.12.0; use `tetherOptions` instead.
      */
     constraints?: ITetherConstraint[];
 
@@ -77,6 +78,13 @@ export interface ITooltipProps extends IProps, IIntentProps {
     onInteraction?: (nextOpenState: boolean) => void;
 
     /**
+     * Whether the tooltip should open when its target is focused.
+     * If `true`, target will render with `tabindex="0"` to make it focusable via keyboard navigation.
+     * @default: true
+     */
+    openOnTargetFocus?: boolean;
+
+    /**
      * Space-delimited string of class names applied to the
      * portal which holds the tooltip if `inline` is set to `false`.
      */
@@ -93,6 +101,12 @@ export interface ITooltipProps extends IProps, IIntentProps {
      * @default "span"
      */
     rootElementTag?: string;
+
+    /**
+     * Options for the underlying Tether instance.
+     * See http://tether.io/#options
+     */
+    tetherOptions?: Partial<Tether.ITetherOptions>;
 
     /**
      * A space-delimited string of class names that are applied to the tooltip (but not the target).
@@ -125,15 +139,13 @@ export interface ITooltipProps extends IProps, IIntentProps {
 
 @PureRender
 export class Tooltip extends React.Component<ITooltipProps, {}> {
-    public static defaultProps: ITooltipProps = {
-        className: "",
-        content: "",
+    public static defaultProps: Partial<ITooltipProps> = {
         hoverCloseDelay: 0,
         hoverOpenDelay: 100,
         isDisabled: false,
+        openOnTargetFocus: true,
         position: Position.TOP,
         rootElementTag: "span",
-        tooltipClassName: "",
         transitionDuration: 100,
         useSmartArrowPositioning: true,
         useSmartPositioning: false,
@@ -142,7 +154,7 @@ export class Tooltip extends React.Component<ITooltipProps, {}> {
     public displayName = "Blueprint.Tooltip";
 
     public render(): JSX.Element {
-        const { children, intent, tooltipClassName } = this.props;
+        const { children, intent, openOnTargetFocus, tooltipClassName } = this.props;
         const classes = classNames(Classes.TOOLTIP, Classes.intentClass(intent), tooltipClassName);
 
         return (
@@ -154,6 +166,7 @@ export class Tooltip extends React.Component<ITooltipProps, {}> {
                 enforceFocus={false}
                 interactionKind={PopoverInteractionKind.HOVER_TARGET_ONLY}
                 lazy={true}
+                openOnTargetFocus={openOnTargetFocus}
                 popoverClassName={classes}
             >
                 {children}
